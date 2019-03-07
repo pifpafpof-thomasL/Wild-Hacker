@@ -18,44 +18,40 @@ class SignUp extends React.Component{
         const {email, password, name, lastname , confirm} = this.state
         e.preventDefault();
 
-        let stateVal = []
-        stateVal.push(email, password, name , lastname)
+        let stateVal = {email, password, name, lastname}
+
 
         if( password ===  confirm) {
-            let jsonTab = []
-            jsonTab.push(JSON.stringify(stateVal, 1,1))
-    
-            this.setState({
-                valeur : jsonTab
-            })
-            fetch('localhost:5000/auth/signup', {
+
+            fetch('/auth/signup', {
                 method: "POST",
-                body: data
+                headers: new Headers({
+                    'content-type': 'application/json'
+                }),
+                body : JSON.stringify(stateVal),
             })
             .then(res => res.json())
-            .then(data => {
-                console.log(data, 'je suis data');
-            })
-
+            .then(
+                res  =>  this.setState({"message":  res.message}),
+                err  =>  this.setState({"message":  err.message, error: true})
+            )
         }else{
             throw new Error('Different password manip')
-
-
-    }
+        }
+}
 
     onChange = (e) => {
         this.setState({
             [e.target.name]: e.target.value,
-            valeur: 0,
         })
     }
 
 
     render(){
-        console.log(this.tab)
+        console.log(this.state.message, 'flash')
         return(
             <div>
-
+                {this.state.message}
                 <form onSubmit={this.handleClick}  className="json" >
                     <label htmlFor='email'> email</label> 
                     <input id='email' type="email" name="email"  onChange={this.onChange}/>
