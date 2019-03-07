@@ -1,0 +1,29 @@
+{
+  "name": "serveur",
+  "version": "1.0.0",
+  "description": "serveur de la Wild",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "npm start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dobby-squirrel/wild-Hacker.git"
+  },
+  "author": "wilder",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dobby-squirrel/wild-Hacker/issues"
+  },
+  "homepage": "https://github.com/dobby-squirrel/wild-Hacker#readme",
+  "devDependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "morgan": "^1.9.1",
+    "nodemon": "^1.18.10"
+  },
+  "dependencies": {
+    "auth": "0.0.9"
+  }
+}
