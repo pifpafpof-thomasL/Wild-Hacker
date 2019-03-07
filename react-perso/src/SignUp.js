@@ -28,10 +28,17 @@ class SignUp extends React.Component{
             this.setState({
                 valeur : jsonTab
             })
-            fetch('localhost:5000/auth/signup')
+            fetch('localhost:5000/auth/signup', {
+                method: "POST",
+                body: data
+            })
+            .then(res => res.json())
+            .then(data => {
+                console.log(data, 'je suis data');
+            })
+
         }else{
-            throw new Error('Different password manip ')
-        }
+            throw new Error('Different password manip')
 
 
     }

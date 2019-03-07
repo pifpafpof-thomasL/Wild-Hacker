@@ -2,6 +2,8 @@ const express = require('express');
 const app = express();
 const authRouter = require('./routes/auth/auth')
 const bodyParser = require('body-parser')
+
+
 const port= 5000;
 
 app.use(bodyParser.json());
