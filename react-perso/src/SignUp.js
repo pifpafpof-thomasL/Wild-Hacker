@@ -1,5 +1,8 @@
 import React from "react";
-import './style.css'
+import './style.css';
+import Swal from 'sweetalert2';
+import Logo from './image/logowildhacker.png';
+
 
 class SignUp extends React.Component{
     constructor(props){
@@ -10,12 +13,12 @@ class SignUp extends React.Component{
             name:'',
             lastname:'',
             confirm:  '',
-            valeur : []
+            form : false
         }
     }
 
     handleClick=(e)=>{
-        const {email, password, name, lastname , confirm} = this.state
+        const {email, password, name, lastname , confirm} = this.state;
         e.preventDefault();
 
         let stateVal = {email, password, name, lastname}
@@ -33,46 +36,73 @@ class SignUp extends React.Component{
             .then(res => res.json())
             .then(
                 res  =>  this.setState({"message":  res.message}),
-                err  =>  this.setState({"message":  err.message, error: true})
+                err  =>  this.setState({"message":  err.message})
             )
+
+        
         }else{
-            throw new Error('Different password manip')
+            Swal.fire({
+                confirmButtonColor: "red",
+                type: "warning",
+                imageUrl: "https://media1.tenor.com/images/5b6c2ca4d6dd12ac628157ae0b7b5e1b/tenor.gif?itemid=5348091",
+                text: "Tu t'es loupé dans la saisie du mot de passe !! ",
+                confirmButtonText: "<a style='color: white' href='/SignUp'>Re-essaye</a>"
+                });
         }
-}
+
+    }
 
     onChange = (e) => {
         this.setState({
+            form: false,
             [e.target.name]: e.target.value,
         })
     }
 
 
     render(){
-        console.log(this.state.message, 'flash')
+
+        const { message } = this.state
+        if (this.state.message !== undefined){
+            Swal.fire({
+                confirmButtonColor: "green",
+                type: "success",
+                text: message,
+                imageUrl:"https://i.pinimg.com/originals/c3/69/56/c36956addcd2debf37b889dfb1d999bc.gif",
+                confirmButtonText: "<a style='color: white' href='/'>Back to home</a>"
+                });
+        }
+
         return(
-            <div>
-                {this.state.message}
+        <div>
+
+            <div className='App-header'>
+                    <img className='App-logo' src={Logo} alt='' />
+            </div>
+            <div className="divJson">
+
                 <form onSubmit={this.handleClick}  className="json" >
                     <label htmlFor='email'> email</label> 
-                    <input id='email' type="email" name="email"  onChange={this.onChange}/>
+                    <input id='email' type="email" name="email"  required   onChange={this.onChange}/>
 
                     <label htmlFor='mdp'> mot de passe</label> 
-                    <input id='mdp' type="password" name="password" onChange={this.onChange} />
+                    <input id='mdp' type="password" name="password" required  onChange={this.onChange} />
 
                     <label htmlFor='verif'> Confirmez mot de passe </label> 
-                    <input id='verif' type="password" name="confirm" onChange={this.onChange} />
+                    <input id='verif' type="password" name="confirm"  required onChange={this.onChange} />
 
                     <label htmlFor='prenom'> prenom</label> 
-                    <input id='prenom' type="text" name="name"onChange={this.onChange} />
+                    <input id='prenom' type="text" name="name" required onChange={this.onChange} />
 
                     <label htmlFor='nom'> nom</label> 
-                    <input id='nom' type="text" name="lastname" onChange={this.onChange}/>
+                    <input id='nom' type="text" name="lastname" required  onChange={this.onChange}/>
 
-                    <button> Envoyer </button>
+                    <button className="btn btn-info buttonJson"> Envoyer </button>
 
                 </form>
-                <h1>Resultat : {this.state.valeur} </h1>
+
             </div>
+        </div>    
         )
     }
 

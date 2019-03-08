@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
-import SignUp from './SignUp';
+import Router from './router'
+// import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
-class App extends Component {
- render(){
-   return(
-        <div>
-            <SignUp />
+export default class App extends Component {
+  render() {
+    return (
+      <div> 
+        <Router/>
       </div>
-   )
- }
+    )
+  }
 }
 
-export default App;
