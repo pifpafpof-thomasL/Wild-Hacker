@@ -2,9 +2,12 @@ const express = require('express');
 const app = express();
 const authRouter = require('./routes/auth/auth')
 const bodyParser = require('body-parser')
-
+const cors = require('cors');
 
 const port= 5000;
+
+
+app.use(cors());
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded ({
@@ -25,5 +28,4 @@ app.listen(port, (err) => {
 
     console.log('Serveur is listening on cindy ear\'s' )
 
-    
 })

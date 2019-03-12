@@ -33,7 +33,7 @@ class SignUp extends React.Component{
                 }),
                 body : JSON.stringify(stateVal),
             })
-            .then(res => res.json())
+            .then(res => res.json()) 
             .then(
                 res  =>  this.setState({"message":  res.message}),
                 err  =>  this.setState({"message":  err.message})
@@ -46,7 +46,7 @@ class SignUp extends React.Component{
                 type: "warning",
                 imageUrl: "https://media1.tenor.com/images/5b6c2ca4d6dd12ac628157ae0b7b5e1b/tenor.gif?itemid=5348091",
                 text: "Tu t'es loupé dans la saisie du mot de passe !! ",
-                confirmButtonText: "<a style='color: white' href='/SignUp'>Re-essaye</a>"
+                confirmButtonText: "<a style='color: white' href='/SignUp'>Essaye encore!</a>"
                 });
         }
 
