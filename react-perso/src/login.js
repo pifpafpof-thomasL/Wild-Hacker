@@ -20,7 +20,7 @@ export default class Login extends React.Component {
     };
 
     handleClick = (e) => {
-        const { message, email, password } = this.state
+        const { email, password } = this.state
         e.preventDefault();
         let DuJson = { email, password }
 
@@ -57,20 +57,14 @@ export default class Login extends React.Component {
                             type: "Error",
                             text: res.message,
                             imageUrl: "https://bonkaday.com/wp-content/uploads/2014/07/gatti-con-comportamenti-strani-e-divertenti-in-movimento-11.gif",
-                        });
-                        Z
+                        }); 
                     }
                 }
             )
     }
-
-
     render() {
-
         return (
-
             <div>
-
                 <div className='App-header'>
                     <img className='App-logo' src={Logo} alt='' />
                 </div>

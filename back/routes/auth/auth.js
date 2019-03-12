@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const mysql = require('mysql');
 const connection = require('../../helpers/db');
-
+const bcrypt = require('bcrypt');
 
 router.get('/dobby', (req, res) => {
     connection.query('SELECT * FROM users', (err, results) => {
@@ -39,44 +39,38 @@ router.post('/profile/:id', (req, res) => {
 })
 
 router.post('/verif', (req, res) => {
+
     const { email, password } = req.body
+    let hash = bcrypt.hashSync(password, 10);
 
 
-    console.log(`SELECT * FROM users WHERE email = (` + mysql.escape(email) + `) AND password =(` + mysql.escape(password) + `)`);
-
-
-    connection.query(`SELECT * FROM users WHERE email =(` + mysql.escape(email) + `) AND password =(` + mysql.escape(password) + `)`, 
-    (err, results) => {
-        console.log('connect query', results)
-        if (err) {
-            console.log('error request sql')
-            res.status(500).json({ "message": 'null' })
-        } else {
-            console.log('results', results, results.length)
-            if (results.length < 1){
-                res.status(200).json({'message': 'wrong password'});
-            }
-            else if (results.email === 'admin@root') {
-                res.status(200).json({ "message": 'admin' });
+    connection.query(`SELECT * FROM users WHERE email =(` + mysql.escape(email) + `)`,
+        (err, results) => {
+            console.log('connect query', results[0].password)
+            if (bcrypt.compareSync(results[0].password, hash)) {
+                if (results.length < 1) {
+                    res.status(200).json({ 'message': 'wrong password' });
+                }
+                else if (results[0].email === 'admin@root') {
+                    res.status(200).json({ "message": 'admin' });
+                } else {
+                    res.status(200).json({ "message": 'user' });
+                }
             } else {
-                res.status(200).json({ "message": 'user' });
+                console.log('error request sql')
+                res.status(500).json({ "message": 'Email ou Mot de passe Incorrect' })
             }
-        }
 
-    })
+        })
 })
 
 
 router.post('/signup', (req, res) => {
+    // bcrypt.hashSync(password, 10);
+    const { email, password, name, lastname } = req.body
+    let mdp = bcrypt.hashSync(password, 10);
+    let result = `INSERT INTO users (email, password, name, lastname) VALUES (` + mysql.escape(email) + `, ` + mysql.escape(mdp) + `, ` + mysql.escape(name) + `,` + mysql.escape(lastname) + `)`;
 
-    let formData = req.body
-    let email = formData.email
-    let password = formData.password
-    let name = formData.name
-    let lastname = formData.lastname
-    let result = `INSERT INTO users (email, password, name, lastname) VALUES (` + mysql.escape(email) + `, ` + mysql.escape(password) + `, ` + mysql.escape(name) + `,` + mysql.escape(lastname) + `)`;
-
-    console.log(formData)
     connection.query(result, (err, results) => {
         if (err) {
             console.log(err)

@@ -16,11 +16,7 @@ app.use(bodyParser.urlencoded ({
 
 app.use('/auth', authRouter); //où authRouter est issu de l'importation
 
-app.use(express.static(__dirname  +  '/public'));
-
-app.get('/' , (req, res) => {
-    res.send('salut ! csv')
-})
+// app.use(express.static(__dirname  +  '/public'));
 
 app.listen(port, (err) => {
     if(err)
