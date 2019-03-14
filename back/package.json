@@ -27,6 +27,8 @@
   "dependencies": {
     "auth": "0.0.9",
     "bcrypt": "^3.0.4",
+    "cookie-parser": "^1.4.4",
+    "jsonwebtoken": "^8.5.0",
     "mysql": "^2.16.0"
   }
 }

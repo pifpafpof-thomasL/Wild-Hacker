@@ -4,6 +4,7 @@ import Swal from 'sweetalert2';
 import Profile from './profile';
 import Logo from './image/logowildhacker.png';
 
+
 export default class Login extends React.Component {
     constructor(props) {
         super(props);
@@ -13,6 +14,7 @@ export default class Login extends React.Component {
             verif: false,
         }
     }
+
     change = (e) => {
         this.setState({
             [e.target.name]: e.target.value
@@ -34,14 +36,16 @@ export default class Login extends React.Component {
             .then(res => res.json())
             .then(
                 res => {
-                    console.log('res.message', res.message);
+            
+                    console.log(res)
                     if (res.message === 'admin') {
+                        this.props.history.push('/profile/$admin$123')
                         Swal.fire({
                             confirmButtonColor: "blue",
                             type: "success",
                             text: 'Bonjour Master',
                             imageUrl: "https://bavatuesdays.com/wp-content/uploads/2012/06/eagle_claw-1.gif",
-                            confirmButtonText: `<a style='color: white' href='/Profile/$admin$123'>Get your Profile</a>`
+                            confirmButtonText:  'yop !'
                         });
                     } else if (res.message === 'user') {
                         Swal.fire({
@@ -63,6 +67,7 @@ export default class Login extends React.Component {
             )
     }
     render() {
+        console.log(React.Component)
         return (
             <div>
                 <div className='App-header'>

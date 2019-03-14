@@ -2,7 +2,14 @@ const express = require('express');
 const router = express.Router();
 const mysql = require('mysql');
 const connection = require('../../helpers/db');
+
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+
+const cookieParser = require('cookie-parser')
+const withAuth = require('./middleware')
+
+const mySecret = 'c\'est secret!';
 
 router.get('/dobby', (req, res) => {
     connection.query('SELECT * FROM users', (err, results) => {
@@ -47,18 +54,18 @@ router.post('/verif', (req, res) => {
     connection.query(`SELECT * FROM users WHERE email =(` + mysql.escape(email) + `)`,
         (err, results) => {
             console.log('connect query', results[0].password)
+            const payload = { email } ;
+            const token = jwt.sign(payload, mySecret, { expiresIn: '1h' });
+            console.log('token', token)
             if (bcrypt.compareSync(results[0].password, hash)) {
-                if (results.length < 1) {
-                    res.status(200).json({ 'message': 'wrong password' });
-                }
-                else if (results[0].email === 'admin@root') {
+                if (results[0].email === 'admin@root') {
                     res.status(200).json({ "message": 'admin' });
                 } else {
-                    res.status(200).json({ "message": 'user' });
+                    res.status(200).json({ "message": 'user', token });
                 }
             } else {
                 console.log('error request sql')
-                res.status(500).json({ "message": 'Email ou Mot de passe Incorrect' })
+                res.status(500).json({ "message": 'Utilisateur ou Mot de passe incorrect !' })
             }
 
         })
@@ -66,7 +73,7 @@ router.post('/verif', (req, res) => {
 
 
 router.post('/signup', (req, res) => {
-    // bcrypt.hashSync(password, 10);
+
     const { email, password, name, lastname } = req.body
     let mdp = bcrypt.hashSync(password, 10);
     let result = `INSERT INTO users (email, password, name, lastname) VALUES (` + mysql.escape(email) + `, ` + mysql.escape(mdp) + `, ` + mysql.escape(name) + `,` + mysql.escape(lastname) + `)`;
